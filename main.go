@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 
@@ -61,27 +61,17 @@ func main() {
 			rs = rs[:min(half, len(rs))]
 		}
 
-		if ls != "" || rs != "" {
-			fmt.Printf("%s%s%s\n", ls, strings.Repeat(" ", half-len(ls)), rs)
-		}
+		fmt.Printf("%s%s%s\n", ls, strings.Repeat(" ", half-len(ls)), rs)
 	}
 }
 
 func readLines(file string) ([]string, error) {
-	fp, err := os.Open(file)
+	data, err := ioutil.ReadFile(file)
 	if err != nil {
 		return nil, err
 	}
 
-	s := bufio.NewScanner(fp)
-
-	var ss []string
-
-	for s.Scan() {
-		ss = append(ss, s.Text())
-	}
-
-	return ss, nil
+	return strings.Split(string(data), "\n"), nil
 }
 
 func min(a, b int) int {
